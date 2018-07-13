@@ -72,7 +72,6 @@ let seeds = [
   }
 ]
 
-
 class App extends Component {
   constructor(props) {
     super(props)
@@ -83,29 +82,39 @@ isSelected = (id) => {
   const oneSelected = this.state.seeds.filter(x =>x.id === id)[0]
   oneSelected.selected ? oneSelected.selected=false :oneSelected.selected=true
   this.setState({seeds: this.state.seeds})
-  // console.log(oneSelected)
 }
 
 isStarred = (id) => {
   const oneStarred = this.state.seeds.filter(x => x.id === id)[0]
   oneStarred.starred ? oneStarred.starred=false : oneStarred.starred=true
   this.setState({seeds: this.state.seeds})
-  // console.log(oneStarred)
 }
 
-hasRead = (id) => {
-const oneMessage = this.state.seeds.map(x => x.id === id)
-// oneMessage.read ? oneMessage.read=false : oneMessage.read=true
-//  this.setState({seeds: this.state.seeds})
+selectAll = () => {
+  this.state.seeds.every(x=>x.selected) ? this.state.seeds.map(x=>x.selected = false) :
+  this.state.seeds.map(x=>x.selected = true)
+  this.setState({seeds: this.state.seeds})
+}
 
- console.log(oneMessage)
+markAsRead = () => {
+  let arr = this.state.seeds
+  for(let i = 0; i < arr.length; i++) {
+    if(arr[i].selected === true) {
+      arr[i].read = true
+      // arr[i].selected = false
+      }
+    }
+// console.log(this.state)
+}
+markAsUnread = () => {
+  
 }
 
   render() {
     return (
       <div className="container">
-        <Toolbar hasRead = {this.hasRead} list = { this.state.seeds }/>
-        <MessageList list = { this.state.seeds }  isStarred={this.isStarred} hasRead = {this.hasRead} isSelected={this.isSelected}/>
+        <Toolbar markAsRead = {this.markAsRead} selectAll = { this.selectAll } />
+        <MessageList list = { this.state.seeds }  isStarred={this.isStarred} isSelected={this.isSelected}/>
 
       </div>
     )

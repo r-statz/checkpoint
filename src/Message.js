@@ -12,7 +12,7 @@ let unstarred = "star fa fa-star-o"
       <div className="col-xs-1">
         <div className="row" >
           <div className="col-xs-2">
-            <input type="checkbox" onChange={() => {
+            <input type="checkbox" checked={`${props.message.selected ? "checked" : ""}`} onChange={() => {
             props.isSelected(props.message.id)}}/>
           </div>
           <div className="col-xs-2" >

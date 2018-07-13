@@ -2,12 +2,6 @@ import React, { Component } from 'react'
 
 
 const Toolbar = (props) => {
-  console.log(props.list)
-  let loop = (props.list) => {
-    for(let i = 0; i < props.list.length; i++) {
-      
-    }
-  }
 
 return (
   <div className="row toolbar">
@@ -17,11 +11,11 @@ return (
         unread messages
       </p>
 
-      <button className="btn btn-default">
+      <button className="btn btn-default" onClick={ props.selectAll }>
         <i className="fa fa-square-o"></i>
       </button>
 
-      <button className="btn btn-default" disabled="" onClick={()=> props.hasRead(props.list.id)}>
+      <button className="btn btn-default" disabled="" onClick={ props.markAsRead }>
         Mark As Read
       </button>
 
