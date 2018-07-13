@@ -86,6 +86,7 @@ isSelected = (id) => {
   const oneSelected = this.state.seeds.filter(x =>x.id === id)[0]
   oneSelected.selected ? oneSelected.selected=false :oneSelected.selected=true
   this.set()
+
   }
 
 isStarred = (id) => {
@@ -115,22 +116,41 @@ markAsRead = () => {
     if(arr[i].selected === true) {
       arr[i].read = true
     }
+  }
+}
 
+markAsUnread = () => {
+  let arr = this.state.seeds
+  for(let i = 0; i < arr.length; i++) {
+    if(arr[i].selected === true) {
+      arr[i].read = false
     }
-      // arr[i].selected = false
-      }
+  }
+}
 
-// console.log(this.state)
+delete = () => {
 
-// markAsUnread = () => {
-//
-// }
+  let messages = this.state.seeds.filter(x => !x.selected)
+  this.setState({seeds: messages})
+  }
 
   render() {
     return (
       <div className="container">
-        <Toolbar markAsRead = {this.markAsRead} markAsUnread={ this.markAsUnread } selectAll = { this.selectAll } everySomeNone={this.everySomeNone}/>
-        <MessageList list = { this.state.seeds }  isStarred={this.isStarred} isSelected={this.isSelected}/>
+        <Toolbar
+          delete={this.delete}
+          markAsRead = {this.markAsRead}
+          markAsUnread={ this.markAsUnread }
+          selectAll = { this.selectAll }
+          everySomeNone={this.everySomeNone}
+          list = { this.state.seeds }
+          isSelected={this.isSelected}
+        />
+        <MessageList
+          list = { this.state.seeds }
+          isStarred={this.isStarred}
+          isSelected={this.isSelected}
+        />
 
       </div>
     )

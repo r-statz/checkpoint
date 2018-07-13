@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 
 const Toolbar = (props) => {
-
+// console.log(props.list)
 return (
   <div className="row toolbar">
     <div className="col-md-12">
@@ -15,11 +15,11 @@ return (
         <i className={`${props.everySomeNone()}`}></i>
       </button>
 
-      <button className="btn btn-default" disabled="" onClick={ props.markAsRead }>
+      <button className="btn btn-default" disabled={`${props.everySomeNone() === "fa fa-square-o" ? "disabled" : ""}`} onClick={ props.markAsRead }>
         Mark As Read
       </button>
 
-      <button className="btn btn-default" disabled="" onClick={ props.markAsUnread }>
+      <button className="btn btn-default" disabled={`${props.everySomeNone() === "fa fa-square-o" ? "disabled" : ""}`} onClick={ props.markAsUnread }>
         Mark As Unread
       </button>
 
@@ -38,7 +38,7 @@ return (
       </select>
 
       <button className="btn btn-default" disabled="">
-        <i className="fa fa-trash-o"></i>
+        <i className="fa fa-trash-o" onClick={ props.delete }></i>
       </button>
     </div>
   </div>
