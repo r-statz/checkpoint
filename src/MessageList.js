@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import Message from './Message'
 
 const MessageList = (props) => {
-    let mapList = props.list.map((x, i) => <Message key={ i } message={ x }/>)
+  let mapList = props.list.map((x, i) => <Message key={ i } message={ x } isStarred = {props.isStarred } hasRead= { props.hasRead } isSelected={props.isSelected}/>)
 
-    return(
+  return(
     <div>
       { mapList }
     </div>

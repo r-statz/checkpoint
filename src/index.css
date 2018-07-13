@@ -65,6 +65,7 @@ body {
 .toolbar .badge {
   margin-right: .5em;
   margin-bottom: .5em;
+  margin-left: 1em;
 }
 
 footer.spacer {

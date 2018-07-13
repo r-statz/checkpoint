@@ -1,21 +1,28 @@
 import React, { Component } from 'react'
 
 const Message = (props) => {
-  // console.log(props.message.subject)
+
+let label = props.message.labels.map((x, i) => <span key={i} className="label label-warning">{ x }</span>)
+
+let starred = "star fa fa-star"
+let unstarred = "star fa fa-star-o"
+
   return (
-    <div className="row message unread">
+    <div id= { props.message.id } className={`row message ${props.message.read ? "read" : "unread"} ${props.message.selected ? "selected" : ""}`} >
       <div className="col-xs-1">
-        <div className="row">
+        <div className="row" >
           <div className="col-xs-2">
-            <input type="checkbox" />
+            <input type="checkbox" onChange={() => {
+            props.isSelected(props.message.id)}}/>
           </div>
-          <div className="col-xs-2">
-            <i className="star fa fa-star-o"></i>
+          <div className="col-xs-2" >
+            <i className={` ${props.message.starred ? starred : unstarred }`} onClick={() => props.isStarred(props.message.id)}></i>
           </div>
         </div>
       </div>
       <div className="col-xs-11">
-        <a href="#">
+        { label }
+        <a  >
             { props.message.subject }
         </a>
       </div>
