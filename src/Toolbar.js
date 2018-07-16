@@ -1,8 +1,15 @@
 import React, { Component } from 'react'
 
 
-const Toolbar = (props) => {
-// console.log(props.list)
+const Toolbar = ({
+  remove,
+  read,
+  selectAll,
+  everySomeNone,
+  isSelected,
+  toggle
+}) => {
+
 return (
   <div className="row toolbar">
     <div className="col-md-12">
@@ -11,15 +18,15 @@ return (
         unread messages
       </p>
 
-      <button className="btn btn-default" onClick={ props.selectAll }>
-        <i className={`${props.everySomeNone()}`}></i>
+      <button className="btn btn-default" onClick={ selectAll }>
+        <i className={`${everySomeNone()}`}></i>
       </button>
 
-      <button className="btn btn-default" disabled={`${props.everySomeNone() === "fa fa-square-o" ? "disabled" : ""}`} onClick={ props.markAsRead }>
+      <button id="read" className="btn btn-default" disabled={`${toggle() ? "" : "disabled"}`} onClick={ read }>
         Mark As Read
       </button>
 
-      <button className="btn btn-default" disabled={`${props.everySomeNone() === "fa fa-square-o" ? "disabled" : ""}`} onClick={ props.markAsUnread }>
+      <button id="unread" className="btn btn-default" disabled={`${toggle() ?  "" : "disabled"}`} onClick={ read }>
         Mark As Unread
       </button>
 
@@ -38,7 +45,7 @@ return (
       </select>
 
       <button className="btn btn-default" disabled="">
-        <i className="fa fa-trash-o" onClick={ props.delete }></i>
+        <i className="fa fa-trash-o" onClick={ remove }></i>
       </button>
     </div>
   </div>

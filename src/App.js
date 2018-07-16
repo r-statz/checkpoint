@@ -82,16 +82,18 @@ class App extends Component {
 
  set = () => this.setState({seeds: this.state.seeds})
 
-isSelected = (id) => {
-  const oneSelected = this.state.seeds.filter(x =>x.id === id)[0]
-  oneSelected.selected ? oneSelected.selected=false :oneSelected.selected=true
-  this.set()
 
-  }
+ read = (e) => {
+   console.log(e.target.id)
+   let bool = e.target.id === "read" ? true : false
+   let messages = this.state.seeds.filter(x=>x.selected)
+   let id = messages.map(x=>x.id)
+   // this.api(id, 'read', bool)
+ }
 
-isStarred = (id) => {
-  const oneStarred = this.state.seeds.filter(x => x.id === id)[0]
-  oneStarred.starred ? oneStarred.starred=false : oneStarred.starred=true
+isSelected = (id, command) => {
+  const selected = this.state.seeds.filter(x => x.id === id)[0]
+  selected[command] ? selected[command]=false : selected[command]=true
   this.set()
 }
 
@@ -99,6 +101,11 @@ selectAll = () => {
   this.state.seeds.every(x=>x.selected) ? this.state.seeds.map(x=>x.selected = false) :
   this.state.seeds.map(x=>x.selected = true)
   this.set()
+}
+
+toggle = () => {
+  let messages = this.state.seeds.filter(x=>x.selected)
+  return messages.length > 0 ? true : false
 }
 
 everySomeNone = () => {
@@ -110,25 +117,7 @@ everySomeNone = () => {
   return "fa fa-square-o"
   }
 
-markAsRead = () => {
-  let arr = this.state.seeds
-  for(let i = 0; i < arr.length; i++) {
-    if(arr[i].selected === true) {
-      arr[i].read = true
-    }
-  }
-}
-
-markAsUnread = () => {
-  let arr = this.state.seeds
-  for(let i = 0; i < arr.length; i++) {
-    if(arr[i].selected === true) {
-      arr[i].read = false
-    }
-  }
-}
-
-delete = () => {
+remove = () => {
   let messages = this.state.seeds.filter(x => !x.selected)
   this.setState({seeds: messages})
   }
@@ -137,17 +126,15 @@ delete = () => {
     return (
       <div className="container">
         <Toolbar
-          delete={this.delete}
-          markAsRead = {this.markAsRead}
-          markAsUnread={ this.markAsUnread }
+          remove={this.remove}
+          read={ this.read }
           selectAll = { this.selectAll }
           everySomeNone={this.everySomeNone}
-          list = { this.state.seeds }
           isSelected={this.isSelected}
+          toggle = {this.toggle}
         />
         <MessageList
           list = { this.state.seeds }
-          isStarred={this.isStarred}
           isSelected={this.isSelected}
         />
 

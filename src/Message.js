@@ -13,10 +13,10 @@ let unstarred = "star fa fa-star-o"
         <div className="row" >
           <div className="col-xs-2">
             <input type="checkbox" checked={`${props.message.selected ? "checked" : ""}`} onChange={() => {
-            props.isSelected(props.message.id)}}/>
+            props.isSelected(props.message.id, "selected")}}/>
           </div>
           <div className="col-xs-2" >
-            <i className={` ${props.message.starred ? starred : unstarred }`} onClick={() => props.isStarred(props.message.id)}></i>
+            <i className={` ${props.message.starred ? starred : unstarred }`} onClick={() => props.isSelected(props.message.id, "starred")}></i>
           </div>
         </div>
       </div>
