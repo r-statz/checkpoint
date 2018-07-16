@@ -129,7 +129,6 @@ markAsUnread = () => {
 }
 
 delete = () => {
-
   let messages = this.state.seeds.filter(x => !x.selected)
   this.setState({seeds: messages})
   }
