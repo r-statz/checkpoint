@@ -6,6 +6,7 @@ let label = props.message.labels.map((x, i) => <span key={i} className="label la
 
 let starred = "star fa fa-star"
 let unstarred = "star fa fa-star-o"
+// console.log(props.message.read)
 
   return (
     <div id= { props.message.id } className={`row message ${props.message.read ? "read" : "unread"} ${props.message.selected ? "selected" : ""}`} >

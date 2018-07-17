@@ -33,7 +33,7 @@ let seeds = [
   {
     "id": 4,
     "subject": "We need to program the primary TCP hard drive!",
-    "read": true,
+    "read": false,
     "starred": false,
     "selected": false,
     "labels": []
@@ -49,7 +49,7 @@ let seeds = [
   {
     "id": 6,
     "subject": "We need to back up the wireless GB driver!",
-    "read": true,
+    "read": false,
     "starred": true,
     "selected": false,
     "labels": []
@@ -57,7 +57,7 @@ let seeds = [
   {
     "id": 7,
     "subject": "We need to index the mobile PCI bus!",
-    "read": true,
+    "read": false,
     "starred": false,
     "selected": false,
     "labels": ["dev", "personal"]
@@ -65,7 +65,7 @@ let seeds = [
   {
     "id": 8,
     "subject": "If we connect the sensor, we can get to the HDD port through the redundant IB firewall!",
-    "read": true,
+    "read": false,
     "starred": true,
     "selected": false,
     "labels": []
@@ -83,14 +83,17 @@ class App extends Component {
  set = () => this.setState({seeds: this.state.seeds})
 
 count = () => {
-  console.log(this.state.seeds)
-  // const unreadCount = this.state.seeds.filter(x=>x.selected)
+  const unreadCount = this.state.seeds.filter(x=>!x.read)
+  let badgeCount = unreadCount.length
+  return badgeCount
 }
 
  read = (e) => {
+
    let bool = e.target.id === "read" ? true : false
    let messages = this.state.seeds.filter(x=>x.selected)
-   let id = messages.map(x=>x.id)
+   messages.map(x=>x.read = bool)
+   this.set({seeds: messages})
    // this.api(id, 'read', bool)
  }
 
@@ -109,6 +112,7 @@ selectAll = () => {
 toggle = () => {
   let messages = this.state.seeds.filter(x=>x.selected)
   return messages.length > 0 ? true : false
+  // this.set({seeds: messages})
 }
 
 everySomeNone = () => {
@@ -125,25 +129,45 @@ remove = () => {
   this.setState({seeds: messages})
   }
 
-  label = (e) => {
-    console.log(e.target.value)
+  addLabel = (e) => {
+    let addLabels = this.state.seeds.filter(x=>x.selected)
+    if(addLabels.includes(e.target.value)){
+      return
+    } else {
+      addLabels.map(x=>x.labels.push(e.target.value))
+    }
+    this.set({seeds : seeds})
+  }
+
+  dropLabel = (e) => {
+    let addLabels = this.state.seeds.filter(x=>x.selected)
+    if(addLabels.includes(e.target.value)){
+      return
+    } else {
+      addLabels.map(x=>x.labels.splice(e.target.value))
+    }
+    this.set({seeds : seeds})
   }
 
   render() {
+
     return (
       <div className="container">
         <Toolbar
-          label={this.label}
+          addLabel={this.addLabel}
+          dropLabel={this.dropLabel}
           remove={this.remove}
           read={ this.read }
           selectAll = { this.selectAll }
           everySomeNone={this.everySomeNone}
           isSelected={this.isSelected}
           toggle = {this.toggle}
+          count = {this.count}
         />
         <MessageList
           list = { this.state.seeds }
           isSelected={this.isSelected}
+          read={this.read}
         />
 
       </div>

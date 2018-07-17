@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 
 
 const Toolbar = ({
-  label,
+  addLabel,
+  dropLabel,
   remove,
   read,
   selectAll,
@@ -12,19 +13,25 @@ const Toolbar = ({
   count
 }) => {
 
+let counter = count()
+// let addLabels = label()
+
 return (
   <div className="row toolbar">
     <div className="col-md-12">
       <p className="pull-right">
-        <span className="badge badge">{ count }</span>
+        <span className="badge badge" >
+          { counter }
+        </span>
         unread messages
       </p>
 
       <button className="btn btn-default" onClick={ selectAll }>
-        <i className={`${everySomeNone()}`}></i>
+        <i className={`${everySomeNone()}`}>
+        </i>
       </button>
 
-      <button id="read" className="btn btn-default" disabled={`${toggle() ? "" : "disabled"}`} onClick={ read }>
+      <button id="read" className="btn btn-default" disabled={`${toggle() ? "" : "disabled"}`} onClick={ read } >
         Mark As Read
       </button>
 
@@ -32,14 +39,14 @@ return (
         Mark As Unread
       </button>
 
-      <select id="add-label" className="form-control label-select" disabled={`${toggle() ?  "" : "disabled"}`}>
+      <select id="add-label" className="form-control label-select" disabled={`${toggle() ?  "" : "disabled"}`} onChange={ addLabel }>
         <option>Apply label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
       </select>
 
-      <select id="remove-label" className="form-control label-select" disabled={`${toggle() ?  "" : "disabled"}`}>
+      <select id="remove-label" className="form-control label-select" disabled={`${toggle() ?  "" : "disabled"}`} onChange={ dropLabel }>
         <option>Remove label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
