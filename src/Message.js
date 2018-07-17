@@ -22,7 +22,7 @@ let unstarred = "star fa fa-star-o"
       </div>
       <div className="col-xs-11">
         { label }
-        <a  >
+        <a >
             { props.message.subject }
         </a>
       </div>

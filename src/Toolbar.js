@@ -2,19 +2,21 @@ import React, { Component } from 'react'
 
 
 const Toolbar = ({
+  label,
   remove,
   read,
   selectAll,
   everySomeNone,
   isSelected,
-  toggle
+  toggle,
+  count
 }) => {
 
 return (
   <div className="row toolbar">
     <div className="col-md-12">
       <p className="pull-right">
-        <span className="badge badge">2</span>
+        <span className="badge badge">{ count }</span>
         unread messages
       </p>
 
@@ -30,21 +32,21 @@ return (
         Mark As Unread
       </button>
 
-      <select className="form-control label-select" disabled="">
+      <select id="add-label" className="form-control label-select" disabled={`${toggle() ?  "" : "disabled"}`}>
         <option>Apply label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
       </select>
 
-      <select className="form-control label-select" disabled="">
+      <select id="remove-label" className="form-control label-select" disabled={`${toggle() ?  "" : "disabled"}`}>
         <option>Remove label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
       </select>
 
-      <button className="btn btn-default" disabled="">
+      <button id="remove" className="btn btn-default" disabled={`${toggle() ?  "" : "disabled"}`}>
         <i className="fa fa-trash-o" onClick={ remove }></i>
       </button>
     </div>

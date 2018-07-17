@@ -82,9 +82,12 @@ class App extends Component {
 
  set = () => this.setState({seeds: this.state.seeds})
 
+count = () => {
+  console.log(this.state.seeds)
+  // const unreadCount = this.state.seeds.filter(x=>x.selected)
+}
 
  read = (e) => {
-   console.log(e.target.id)
    let bool = e.target.id === "read" ? true : false
    let messages = this.state.seeds.filter(x=>x.selected)
    let id = messages.map(x=>x.id)
@@ -122,10 +125,15 @@ remove = () => {
   this.setState({seeds: messages})
   }
 
+  label = (e) => {
+    console.log(e.target.value)
+  }
+
   render() {
     return (
       <div className="container">
         <Toolbar
+          label={this.label}
           remove={this.remove}
           read={ this.read }
           selectAll = { this.selectAll }
