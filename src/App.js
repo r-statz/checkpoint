@@ -3,6 +3,7 @@ import logo from './logo.svg'
 import './App.css'
 import MessageList from './MessageList'
 import Toolbar from './Toolbar'
+import Compose from './Compose'
 
 
 let seeds = [
@@ -12,7 +13,8 @@ let seeds = [
     "read": false,
     "starred": true,
     "selected": false,
-    "labels": ["dev", "personal"]
+    "labels": ["dev", "personal"],
+    "body" : ""
   },
   {
     "id": 2,
@@ -20,7 +22,8 @@ let seeds = [
     "read": false,
     "starred": false,
     "selected": false,
-    "labels": []
+    "labels": [],
+    "body" : ""
   },
   {
     "id": 3,
@@ -28,7 +31,8 @@ let seeds = [
     "read": false,
     "starred": true,
     "selected": false,
-    "labels": ["dev"]
+    "labels": ["dev"],
+    "body" : ""
   },
   {
     "id": 4,
@@ -36,7 +40,8 @@ let seeds = [
     "read": false,
     "starred": false,
     "selected": false,
-    "labels": []
+    "labels": [],
+    "body" : ""
   },
   {
     "id": 5,
@@ -44,7 +49,8 @@ let seeds = [
     "read": false,
     "starred": false,
     "selected": false,
-    "labels": ["personal"]
+    "labels": ["personal"],
+    "body" : ""
   },
   {
     "id": 6,
@@ -52,7 +58,8 @@ let seeds = [
     "read": false,
     "starred": true,
     "selected": false,
-    "labels": []
+    "labels": [],
+    "body" : ""
   },
   {
     "id": 7,
@@ -60,7 +67,8 @@ let seeds = [
     "read": false,
     "starred": false,
     "selected": false,
-    "labels": ["dev", "personal"]
+    "labels": ["dev", "personal"],
+    "body" : ""
   },
   {
     "id": 8,
@@ -68,7 +76,8 @@ let seeds = [
     "read": false,
     "starred": true,
     "selected": false,
-    "labels": []
+    "labels": [],
+    "body" : ""
   }
 ]
 
@@ -77,10 +86,11 @@ let seeds = [
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {seeds : [...seeds]}
+    this.state = {seeds : [...seeds],
+                  compose : false}
   }
 
- set = () => this.setState({seeds: this.state.seeds})
+set = () => this.setState({seeds: this.state.seeds})
 
 count = () => {
   const unreadCount = this.state.seeds.filter(x=>!x.read)
@@ -88,12 +98,11 @@ count = () => {
   return badgeCount
 }
 
- read = (e) => {
-
-   let bool = e.target.id === "read" ? true : false
-   let messages = this.state.seeds.filter(x=>x.selected)
-   messages.map(x=>x.read = bool)
-   this.set({seeds: messages})
+read = (e) => {
+  let bool = e.target.id === "read" ? true : false
+  let messages = this.state.seeds.filter(x=>x.selected)
+  messages.map(x=>x.read = bool)
+  this.set({seeds: messages})
    // this.api(id, 'read', bool)
  }
 
@@ -129,48 +138,111 @@ remove = () => {
   this.setState({seeds: messages})
   }
 
-  addLabel = (e) => {
-    let addLabels = this.state.seeds.filter(x=>x.selected)
-    if(addLabels.includes(e.target.value)){
+addLabel = (e) => {
+  let addLabels = this.state.seeds.filter(x=>x.selected)
+  addLabels.map(x=> {
+    if(x.labels.includes(e.target.value)){
       return
     } else {
-      addLabels.map(x=>x.labels.push(e.target.value))
+    x.labels.push(e.target.value)
     }
-    this.set({seeds : seeds})
-  }
+  })
+  this.set()
+}
 
-  dropLabel = (e) => {
-    let addLabels = this.state.seeds.filter(x=>x.selected)
-    if(addLabels.includes(e.target.value)){
-      return
-    } else {
-      addLabels.map(x=>x.labels.splice(e.target.value))
+dropLabel = (e) => {
+  let dropLabels = this.state.seeds.filter(x=>x.selected)
+  dropLabels.map(x => {
+    if(x.labels.includes(e.target.value)) {
+      x.labels.splice(x.labels.indexOf(e.target.value), 1)
     }
-    this.set({seeds : seeds})
+  })
+  this.set()
+}
+
+showCompose = (e) => {
+  e.preventDefault()
+
+  let composeState = this.state.compose ? this.state.compose = false : this.state.compose = true
+  this.setState({compose: composeState})
+}
+
+composeMessage = (e) => {
+  //GRABBING THE VALUES AND SETTING THE STATE
+  //FOR THE FORM INPUTS
+  let subject
+  let body
+  e.target.id === 'subject' ? subject = e.target.value : body = e.target.value
+  console.log(body, "body")
+  console.log(subject, "subject")
+  // console.log(this.state.seeds)
+//RUNNING A LOOP TO SET A UNIQUE ID IN STATE
+//FOR NEWLY COMPOSED MESSAGES
+// console.log(this.state.seeds, "this.state.seeds")
+let arr = this.state.seeds
+let maxId = 0
+let newId
+for(let i = 0; i < arr.length; i++) {
+  if(arr[i].id > maxId) {
+    console.log("arr[i].id", arr[i].id)
+    maxId = arr[i].id
+    console.log("maxId", maxId)
+    newId = maxId + 1
+    console.log(newId, "newId")
   }
+}
+return newId
 
-  render() {
+let newMessage = {
+  "id": newId,
+  "subject": subject,
+  "read": false,
+  "starred": false,
+  "selected": false,
+  "labels": [],
+  "body" : body
+}
 
-    return (
-      <div className="container">
-        <Toolbar
-          addLabel={this.addLabel}
-          dropLabel={this.dropLabel}
-          remove={this.remove}
-          read={ this.read }
-          selectAll = { this.selectAll }
-          everySomeNone={this.everySomeNone}
-          isSelected={this.isSelected}
-          toggle = {this.toggle}
-          count = {this.count}
-        />
-        <MessageList
-          list = { this.state.seeds }
-          isSelected={this.isSelected}
-          read={this.read}
-        />
+this.set({seeds : [...seeds, newMessage]})
+console.log('this.state.seeds', this.state.seeds)
+  // this.setState({
+  //   "id": newId,
+  //   "subject": subject,
+  //   "read": false,
+  //   "starred": false,
+  //   "selected": false,
+  //   "labels": [],
+  //   "body" : body
+  // })
+}
+//MAKING THE THE NEWLY CREATE MESSAGE OBJECT
+//AND SETTING THE STATE
 
-      </div>
+
+render() {
+
+  return (
+    <div className="container">
+      <Toolbar
+        showCompose={this.showCompose}
+        addLabel={this.addLabel}
+        dropLabel={this.dropLabel}
+        remove={this.remove}
+        read={ this.read }
+        selectAll = { this.selectAll }
+        everySomeNone={this.everySomeNone}
+        isSelected={this.isSelected}
+        toggle = {this.toggle}
+        count = {this.count}
+      />
+      {this.state.compose ? <Compose showCompose={this.showCompose} composeMessage={this.composeMessage}
+      /> : <div></div>}
+      <MessageList
+        list = { this.state.seeds }
+        isSelected={this.isSelected}
+        read={this.read}
+      />
+    </div>
     )
   }
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 
 const Toolbar = ({
+  showCompose,
   addLabel,
   dropLabel,
   remove,
@@ -14,7 +15,6 @@ const Toolbar = ({
 }) => {
 
 let counter = count()
-// let addLabels = label()
 
 return (
   <div className="row toolbar">
@@ -25,7 +25,9 @@ return (
         </span>
         unread messages
       </p>
-
+      <button className="btn btn-danger" onClick={ showCompose } >
+      <i className="fa fa-plus"></i>
+    </button>
       <button className="btn btn-default" onClick={ selectAll }>
         <i className={`${everySomeNone()}`}>
         </i>
