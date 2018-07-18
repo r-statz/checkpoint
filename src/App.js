@@ -87,7 +87,8 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {seeds : [...seeds],
-                  compose : false}
+                  compose : false,
+                  }
   }
 
 set = () => this.setState({seeds: this.state.seeds})
@@ -165,6 +166,7 @@ showCompose = (e) => {
 
   let composeState = this.state.compose ? this.state.compose = false : this.state.compose = true
   this.setState({compose: composeState})
+  console.log(this.state.seeds)
 }
 
 composeMessage = (e) => {
@@ -173,39 +175,34 @@ composeMessage = (e) => {
   let subject
   let body
   e.target.id === 'subject' ? subject = e.target.value : body = e.target.value
-  console.log(body, "body")
-  console.log(subject, "subject")
-  // console.log(this.state.seeds)
-//RUNNING A LOOP TO SET A UNIQUE ID IN STATE
-//FOR NEWLY COMPOSED MESSAGES
-// console.log(this.state.seeds, "this.state.seeds")
-let arr = this.state.seeds
-let maxId = 0
-let newId
-for(let i = 0; i < arr.length; i++) {
-  if(arr[i].id > maxId) {
-    console.log("arr[i].id", arr[i].id)
-    maxId = arr[i].id
-    console.log("maxId", maxId)
-    newId = maxId + 1
-    console.log(newId, "newId")
+
+  this.setState({subject: subject,
+                 body: body})
+
+  console.log(this.state.subject, "this.state.sub")
+}
+
+send = () => {
+  //RUNNING A LOOP TO SET A UNIQUE ID IN STATE
+  //FOR NEWLY COMPOSED MESSAGES
+  let arr = this.state.seeds
+  let maxId = 0
+  let newId
+  for(let i = 0; i < arr.length; i++) {
+    if(arr[i].id > maxId) {
+      console.log("arr[i].id", arr[i].id)
+      maxId = arr[i].id
+      console.log("maxId", maxId)
+      newId = maxId + 1
+      console.log(newId, "newId")
+    }
   }
-}
-return newId
+  return newId
 
-let newMessage = {
-  "id": newId,
-  "subject": subject,
-  "read": false,
-  "starred": false,
-  "selected": false,
-  "labels": [],
-  "body" : body
-}
-
-this.set({seeds : [...seeds, newMessage]})
-console.log('this.state.seeds', this.state.seeds)
-  // this.setState({
+  //MAKING THE THE NEWLY CREATE MESSAGE OBJECT
+  //AND SETTING THE STATE
+  // console.log('this.state.seeds', this.state.seeds)
+  // let newMessage = {
   //   "id": newId,
   //   "subject": subject,
   //   "read": false,
@@ -213,11 +210,10 @@ console.log('this.state.seeds', this.state.seeds)
   //   "selected": false,
   //   "labels": [],
   //   "body" : body
-  // })
+  // }
+  //
+  // this.setState({seeds : [...this.state.seeds, newMessage]})
 }
-//MAKING THE THE NEWLY CREATE MESSAGE OBJECT
-//AND SETTING THE STATE
-
 
 render() {
 
