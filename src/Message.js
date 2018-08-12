@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 const Message = (props) => {
 
-let label = props.message.labels.map((x, i) => <span key={i} className="label label-warning">{ x }</span>)
+let label = props.message.labels.map((x, i) => <span key={ i } className="label label-warning">{ x }</span>)
 
 let starred = "star fa fa-star"
 let unstarred = "star fa fa-star-o"

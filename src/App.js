@@ -32,7 +32,28 @@ class App extends Component {
 
     this.setState({messages: [...this.state.messages, message]})
     this.showCompose()
-}
+  }
+
+  async update(arr, cmd, prop, value) {
+    let items = {
+      id: arr,
+      cmd: cmd,
+      [prop]: value,
+    }
+
+    const response = await fetch('http://localhost:8082/api/messages',
+    {
+      method: 'PATCH',
+      body: JSON.stringify(items),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+    const message = await response.json()
+    this.setState({messages: message})
+  }
+
 
 getInput = (e) => {
   let newMessage = {
@@ -45,28 +66,31 @@ getInput = (e) => {
 setInput = (e) => {
   e.preventDefault()
   let newMessage = this.state.message
-
   this.createMessage(newMessage)
-  // console.log(newMessage)
 }
 
-count = () => {
-  const unreadCount = this.state.messages.filter(x=>!x.read)
-  let badgeCount = unreadCount.length
-  return badgeCount
-}
+// count = () => {
+//   const unreadCount = this.state.messages.filter(x=>!x.read)
+//   let badgeCount = unreadCount.length
+//   return badgeCount
+// }
 
 read = (e) => {
   let bool = e.target.id === "read" ? true : false
   let messages = this.state.messages.filter(x=>x.selected)
   messages.map(x=>x.read = bool)
-  this.set({messages: messages})
+  // this.set({messages: messages})
  }
 
 isSelected = (id, command) => {
+  console.log(command)
+  let value
   const selected = this.state.messages.filter(x => x.id === id)[0]
+
   selected[command] ? selected[command]=false : selected[command]=true
-  this.set()
+  // selected[command] ? value=false : value=true
+  // this.update(id, "starred", "starred", value)
+this.set()
 }
 
 selectAll = () => {
@@ -78,7 +102,6 @@ selectAll = () => {
 toggle = () => {
   let messages = this.state.messages.filter(x=>x.selected)
   return messages.length > 0 ? true : false
-  // this.set({messages: messages})
 }
 
 everySomeNone = () => {
@@ -91,8 +114,8 @@ everySomeNone = () => {
   }
 
 remove = () => {
-  let messages = this.state.messages.filter(x => !x.selected)
-  this.setState({messages: messages})
+  let messages = this.state.messages.filter(x => !x.selected).map(x=> x.id)
+  // this.setState({messages: messages})
   }
 
 addLabel = (e) => {
@@ -138,7 +161,7 @@ render() {
         toggle = {this.toggle}
         count = {this.count}
       />
-      {this.state.compose ? <Compose getInput= { this.getInput } setInput={ this.setInput } showCompose={this.showCompose} createMessage={this.createMessage}
+      {this.state.compose ? <Compose getInput= { this.getInput } setInput={ this.setInput } showCompose={this.showCompose}
       /> : <div></div>}
       <MessageList
         list = { this.state.messages }
